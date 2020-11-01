@@ -2,16 +2,17 @@ import requests
 import json
 import crawler.english_cambridge as cambridge
 from Naked.toolshed.shell import muterun_js
+import platform
 
-DOWNLOAD_DIR = 'C:/Users/Yu-Hsien/AppData/Roaming/Anki2/YuHsien/collection.media/'
+if platform.system() == 'Windows':
+    DOWNLOAD_DIR = 'C:/Users/Yu-Hsien/AppData/Roaming/Anki2/YuHsien/collection.media/'
+    JP_CRAWLER_PATH = 'C:/Users/Yu-Hsien/Desktop/crawler/littleD.js'
+elif platform.system() == 'Darwin':
+    DOWNLOAD_DIR = '/Users/pacsoft/Library/Application Support/Anki2/YuHsien/collection.media/'
+    JP_CRAWLER_PATH = '/Users/pacsoft/Desktop/littleDCrawler/littleD.js'
+
 EN_INPUT_FILE = 'input_EN.txt'
-
-JP_CRAWLER_PATH = 'C:/Users/Yu-Hsien/Desktop/crawler/littleD.js'
 JP_OUTPUT_FILE = 'littleDJSON.json'
-
-
-START = 'start'
-END_OF_DICT = '----'
 
 en_note_template = {
     "deckName": "英文",
