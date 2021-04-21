@@ -98,6 +98,6 @@ def LookUp(word, download_dir):
     print(' ')
     print('<< {} >>'.format(word))
     print(' ')
-    print('正面', front_word)
-    print('背面', back_word)
+    # print('正面', front_word)
+    # print('背面', back_word)
     return result
