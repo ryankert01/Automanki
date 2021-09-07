@@ -3,9 +3,10 @@ import json
 import crawler.english_cambridge as cambridge
 from Naked.toolshed.shell import muterun_js
 import platform
+import re
 
 if platform.system() == 'Windows':
-    DOWNLOAD_DIR = 'C:/Users/Yu-Hsien/AppData/Roaming/Anki2/YuHsien/collection.media/'
+    DOWNLOAD_DIR = 'C:/Users/tang/AppData/Roaming/Anki2/使用者 1/collection.media/'
     JP_CRAWLER_PATH = 'C:/Users/Yu-Hsien/Desktop/crawler/littleD.js'
 elif platform.system() == 'Darwin':
     DOWNLOAD_DIR = '/Users/pacsoft/Library/Application Support/Anki2/YuHsien/collection.media/'
@@ -16,8 +17,8 @@ JP_INPUT_FILE = 'littleDJSON.json'
 JP_SENTENCE_INPUT_FILE = 'input_JP_sentence.json'
 
 en_note_template = {
-    "deckName": "英文",
-    "modelName": "基本型(含反向的卡片)",
+    "deckName": "英文::論文",
+    "modelName": "細分版",
     "fields": {},
 }
 
@@ -58,6 +59,7 @@ add_JP_cards(JP_INPUT_FILE, jp_note_template)
 
 # Run EN Crawler
 with open(EN_INPUT_FILE , encoding='utf-8') as word_list:
+    word_list = filter(lambda x:  not re.match(r'^\s*$', x), word_list) #
     for word in word_list:
         word = word.splitlines()[0]
         en_note_template['fields'] = cambridge.LookUp(word, DOWNLOAD_DIR)

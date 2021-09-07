@@ -32,11 +32,15 @@ def LookUp(word, download_dir):
     content = urllib.request.urlopen(url).read()
     soup = BeautifulSoup(content, 'lxml')
     result = {}
-    front_word = word + '<br>'
+    #front_word = word + '<br>'
+    vocab = soup.find('span', class_ = 'hw dhw').get_text()
+    phonetic = "/" + soup.find('span', class_ = 'us dpron-i').find('span',"ipa dipa lpr-2 lpl-1").get_text() + "/"
+    front_word = ''
     back_word = ''
-    guideWordStyleHead = '<font color="yellow"><b>'
+    sound = ''
+    guideWordStyleHead = '<font color = #64e82c><b>'
     guideWordStyleTail = '</b></font>'
-    posStyleHead = '<font color=#00fff9>'
+    posStyleHead = '<font color = #ffa60d>'
     posStyleTail = '</font>'
     soundCnt = 1
     cnt = 1
@@ -58,7 +62,7 @@ def LookUp(word, download_dir):
                 if source is not None and bool(download_dir) != False:
                     try:
                         urllib.request.urlretrieve('https://dictionary.cambridge.org{}'.format(source['src']), '{}Py_{}_{}.mp3'.format(download_dir, word, soundCnt))
-                        front_word = front_word + '[sound:Py_{}_{}.mp3]'.format(word, soundCnt)
+                        sound ='[sound:Py_{}_{}.mp3]'.format(word, soundCnt)
                         soundCnt = soundCnt + 1
                     except urllib.error.HTTPError as err:
                         print("HTTP Error:", err)
@@ -93,8 +97,11 @@ def LookUp(word, download_dir):
     uppercase_word = word[0].upper() + word[1:len(word)]
     back_word = back_word.replace(uppercase_word,'___')
 
-    result['正面'] = front_word
-    result['背面'] = back_word
+    result['單字'] = vocab
+    result['音標'] = phonetic
+    result['發音(US)'] = sound
+    result['例句'] = front_word
+    result['解釋'] = back_word
     print(' ')
     print('<< {} >>'.format(word))
     print(' ')
