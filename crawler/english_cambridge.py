@@ -38,10 +38,14 @@ def LookUp(word, download_dir):
     front_word = ''
     back_word = ''
     sound = ''
-    guideWordStyleHead = '<font color = #64e82c><b>'
-    guideWordStyleTail = '</b></font>'
-    posStyleHead = '<font color = #ffa60d>'
+
+    guideWordStyleHead_bp = '<font color = #7700b8><b>' 
+    guideWordStyleTail_bp = '</b></font>'
+    guideWordStyleHead = '<font color = #0085f5>' #64e82c 
+    guideWordStyleTail = '</font>'
+    posStyleHead = '<font color = #a4a1a6>' #ffa60d 
     posStyleTail = '</font>'
+    
     soundCnt = 1
     cnt = 1
 
@@ -69,14 +73,14 @@ def LookUp(word, download_dir):
                     # print(source['src'])
         for guideWordBlock in posBlock.select('div.pr.dsense'):                     # There can be more than one guide word in a part of speech
             for guideword in guideWordBlock.select('span.guideword.dsense_gw'):
-                back_word += "{}{}{}<br>".format(guideWordStyleHead, guideword.get_text(), guideWordStyleTail)
+                back_word += "{}{}{}<br>".format(guideWordStyleHead_bp, guideword.get_text(), guideWordStyleTail_bp)
                 # print(guideword.get_text())
             for meaningBlock in guideWordBlock.select('div.def-block.ddef_block'):  # A guide word can include many meanings
                 for enMeaning in meaningBlock.select('div.def.ddef_d'):
                     back_word += "{}) {}<br>".format(cnt, enMeaning.get_text())
                     # print(enMeaning.get_text())
                 for zhMeaning in meaningBlock.select('div.def-body.ddef_b > span.trans.dtrans.dtrans-se'):
-                    back_word += "{}) {}<br>".format(cnt, zhMeaning.get_text())
+                    back_word += "{}{}{}<br>".format(guideWordStyleHead, zhMeaning.get_text(), guideWordStyleTail)
                     # print(zhMeaning.get_text())
                 front_word += "{}) ".format(cnt)
                 for enExample in meaningBlock.select('div.def-body.ddef_b > div.examp.dexamp > span.eg.deg'):
@@ -96,6 +100,9 @@ def LookUp(word, download_dir):
     back_word = back_word.replace(word,'___')
     uppercase_word = word[0].upper() + word[1:len(word)]
     back_word = back_word.replace(uppercase_word,'___')
+
+    front_word = front_word.replace( vocab , '<u>'+vocab+'</u>') # 粗體:'<b>'+vocab+'</b>'
+    print(front_word)
 
     result['單字'] = vocab
     result['音標'] = phonetic
