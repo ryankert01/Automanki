@@ -1,16 +1,16 @@
 import requests
 import json
 import crawler.english_cambridge as cambridge
-from Naked.toolshed.shell import muterun_js
+
 import platform
 import re
 
 if platform.system() == 'Windows':
     DOWNLOAD_DIR = 'C:/Users/tang/AppData/Roaming/Anki2/使用者 1/collection.media/'
-    JP_CRAWLER_PATH = 'C:/Users/Yu-Hsien/Desktop/crawler/littleD.js'
 elif platform.system() == 'Darwin':
     DOWNLOAD_DIR = '/Users/pacsoft/Library/Application Support/Anki2/YuHsien/collection.media/'
-    JP_CRAWLER_PATH = '/Users/pacsoft/Desktop/littleDCrawler/littleD.js'
+elif platform.system() == 'Linux':
+    print("Linux!")
 
 EN_INPUT_FILE = 'input_EN.txt'
 JP_INPUT_FILE = 'littleDJSON.json'
@@ -49,13 +49,7 @@ def add_JP_cards(input_file, note_template):
             response = api('addNotes', **{ "notes": list(notes) })
             print('API Response:', response.json())
 
-# Run JP Crawler
-js_response = muterun_js(JP_CRAWLER_PATH, 'python')
-if js_response.exitcode == 0:
-    print(js_response.stdout.decode("utf-8"))
-else:
-    print(js_response.stderr)
-add_JP_cards(JP_INPUT_FILE, jp_note_template)
+
 
 # Run EN Crawler
 with open(EN_INPUT_FILE , encoding='utf-8') as word_list:
